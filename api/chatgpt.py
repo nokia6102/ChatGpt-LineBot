@@ -1,5 +1,5 @@
 import os
-import openai
+from openai import OpenAI
 from api.prompt import Prompt
 
 class ChatGPT:
@@ -7,11 +7,13 @@ class ChatGPT:
         self.prompt = Prompt()
         # 設定 OpenAI API 金鑰
         self.api_key = os.getenv("OPENAI_API_KEY")
-        openai.api_key = self.api_key
 
-        # 支援自訂 URL
-        self.base_url = os.getenv("OPENAI_BASE_URL", default="https://api.openai.com/v1")
-        openai.api_base = self.base_url
+        # 初始化 OpenAI 客戶端
+        client = OpenAI(
+            api_key = os.getenv("OPENAI_API_KEY"),
+            base_url = os.getenv("OPENAI_BASE_URL", default="https://free.v36.cm/v1") 
+        )
+
 
         # 設定其他參數
         self.model = os.getenv("OPENAI_MODEL", default="gpt-4")
@@ -23,7 +25,7 @@ class ChatGPT:
     def get_response(self):
         try:
             # 使用 OpenAI SDK 呼叫 API
-            response = openai.Completion.create(
+            response = client.chat.completions.create(
                 model=self.model,
                 prompt=self.prompt.generate_prompt(),
                 temperature=self.temperature,

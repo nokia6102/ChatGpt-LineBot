@@ -30,7 +30,7 @@ class ChatGPT:
         self.api_key = os.getenv("OPENAI_API_KEY")
         self.base_url = os.getenv("OPENAI_BASE_URL", default="https://free.v36.cm/v1")
         self.client = OpenAI(api_key=self.api_key, base_url=self.base_url)
-        self.model = os.getenv("OPENAI_MODEL", default="text-davinci-003")
+        self.model = os.getenv("OPENAI_MODEL", default="gpt-4o-mini")
         self.temperature = float(os.getenv("OPENAI_TEMPERATURE", default=0))
         self.frequency_penalty = float(os.getenv("OPENAI_FREQUENCY_PENALTY", default=0))
         self.presence_penalty = float(os.getenv("OPENAI_PRESENCE_PENALTY", default=0.6))

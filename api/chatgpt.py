@@ -21,6 +21,7 @@ class ChatGPT:
         self.max_tokens = int(os.getenv("OPENAI_MAX_TOKENS", default=120))
 
     def get_response(self):
+        global client
         try:
             # 使用 OpenAI SDK 呼叫 API
             response = client.chat.completions.create(

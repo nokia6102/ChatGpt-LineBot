@@ -5,9 +5,7 @@ from api.prompt import Prompt
 class ChatGPT:
     def __init__(self):
         self.prompt = Prompt()
-        # 設定 OpenAI API 金鑰
-        self.api_key = os.getenv("OPENAI_API_KEY")
-
+    
         # 初始化 OpenAI 客戶端
         client = OpenAI(
             api_key = os.getenv("OPENAI_API_KEY"),

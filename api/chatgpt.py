@@ -1,5 +1,6 @@
 from api.prompt import Prompt
 import os
+import requests
 
 class OpenAI:
     def __init__(self, api_key, base_url):
@@ -7,7 +8,6 @@ class OpenAI:
         self.base_url = base_url
 
     def create_completion(self, model, prompt, temperature, frequency_penalty, presence_penalty, max_tokens):
-        import requests
         headers = {
             "Authorization": f"Bearer {self.api_key}",
             "Content-Type": "application/json"
@@ -20,9 +20,22 @@ class OpenAI:
             "presence_penalty": presence_penalty,
             "max_tokens": max_tokens
         }
-        response = requests.post(f"{self.base_url}/completions", headers=headers, json=payload)
-        response.raise_for_status()
-        return response.json()
+        try:
+            # 設置超時時間為 10 秒
+            response = requests.post(
+                f"{self.base_url}/completions",
+                headers=headers,
+                json=payload,
+                timeout=10
+            )
+            response.raise_for_status()
+            return response.json()
+        except requests.exceptions.Timeout:
+            raise Exception("ChatGPT API 請求超時，請稍後再試。")
+        except requests.exceptions.HTTPError as http_err:
+            raise Exception(f"HTTP 錯誤: {http_err}")
+        except requests.exceptions.RequestException as err:
+            raise Exception(f"請求錯誤: {err}")
 
 class ChatGPT:
     def __init__(self):
